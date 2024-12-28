@@ -1,6 +1,6 @@
-# Matrix_Clock
+# LED Matrix Retro Clock
 
-Matrix_Clock is a project that displays the current time on an 8x8 LED matrix display using an ESP32 microcontroller. The project uses the MD_Parola library to control the LED matrix and display custom characters, including a battery icon and digits.
+A retro style clock with matrix LED display using an ESP32 microcontroller with automatic NTP time sync.
 
 ## Features
 
