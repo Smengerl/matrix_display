@@ -2,6 +2,12 @@
 
 A retro style clock with matrix LED display using an ESP32 microcontroller with automatic NTP time sync.
 
+Renderings / Prototype:
+| Front                                                | Back                                                 | Isometric |
+| ---------------------------------------------------- | ---------------------------------------------------- | --------- |
+| <img src="./print/rendering/fully_assembled_front.png" alt="front"/> | <img src="./print/rendering/fully_assembled_back.png" alt="back"/>   | <img src="./print/rendering/fully_assembled_iso.png" alt="iso"/> |
+
+
 ## Features
 
 - Displays the current time in HH:MM format
