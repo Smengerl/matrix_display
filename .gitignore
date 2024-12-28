@@ -1,0 +1,6 @@
+.pio
+.vscode
+lib
+include
+test
+sdkconfig.esp32dev
