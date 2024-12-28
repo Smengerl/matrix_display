@@ -43,7 +43,9 @@
 #define DEFAULT_ANIMATION_SPEED 50
 #define DEFAULT_ANIMATION_STOP 1500
 
-
+// Adapt to a reasonable timeout to try to sync with NTP server (full roundtrip time),
+// however, in current simple implementation, this affects framerate of display refresh during sync
+#define NTP_SYNC_TIMEOUT 400
 
 
 
@@ -89,15 +91,15 @@ void connectWiFi() {
 */
 
 void setupDateTime() {
-  ledMatrix->displayText("NTP Synching, please wait", PA_CENTER, DEFAULT_ANIMATION_SPEED, DEFAULT_ANIMATION_STOP, PA_SCROLL_LEFT, PA_FADE);
+  ledMatrix->displayText("NTP Sync", PA_CENTER, DEFAULT_ANIMATION_SPEED, DEFAULT_ANIMATION_STOP, PA_SCROLL_LEFT, PA_FADE);
   ledMatrix->displayAnimate();
 
-  Serial.print("NTP synching... ");
+  Serial.print("NTP synching, please wait... ");
 
   DateTime.setServer(NTP_SERVER);
   DateTime.setTimeZone(TIMEZONE);
 
-  while (!DateTime.begin(DEFAULT_ANIMATION_SPEED)) {
+  while (!DateTime.begin(NTP_SYNC_TIMEOUT)) {
     if (ledMatrix->displayAnimate()) {
       ledMatrix->displayReset();
     }

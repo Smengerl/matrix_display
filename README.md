@@ -66,14 +66,14 @@ All electronics are screwed to the back of the housing, finally the front of the
    ```sh
    git clone https://github.com/yourusername/Matrix_Clock.git
 2. Open the project in PlatformIO.
-3. Wait for PIO to configure and download the required libraries:
-4. Connect the ESP32 to the 8x8 LED matrix display according to the wiring diagram.
-5. Upload the project to your ESP32 microcontroller.
+3. Wait for PIO to configure and download the required libraries
+4. Compile and upload the project to your ESP32 microcontroller.
+
 
 ## Usage
 - Power on the ESP32.
 - On first usage only: Configure the ESP to your local WiFi. For this, connect to the ESP's access point and use the default configuration page to enter your WLAN SSID and password 
-- Wait for NTP sync (may take up to a minute)
+- Wait for NTP sync
 - The current time will be displayed on the LED matrix.
 
 ## License
@@ -81,4 +81,3 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Acknowledgements
 MD_Parola library by MajicDesigns
-pftime library
