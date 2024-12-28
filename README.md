@@ -13,8 +13,6 @@ A retro style clock with matrix LED display using an ESP32 microcontroller with 
 
 - ESP32 (housing designed for USB C version)
 - 4 digit 8x8 LED matrix display based on MAX7219 (FC16)
-- 3D printed housing
-- 8 screws M3*10mm
 
 ## Software Requirements
 
@@ -22,6 +20,39 @@ A retro style clock with matrix LED display using an ESP32 microcontroller with 
 - MD_Parola (via PIO)
 - ESPDateTime (via PIO) 
 - WiFiManager (via PIO)
+
+## Mechanics
+
+The only mechanical part required is the housing which consists of a front and a back piece.
+
+### 3D-Printed Parts
+
+| Filename                     | Thumbnail                                                           | Required |
+| ---------------------------- | --------------------------------------------------------------------| -------- |
+| `./print/front.stl`          | <img src="./print/rendering/front.png" alt="front" width="300"/>    | 1        |
+| `./print/back.stl`           | <img src="./print/rendering/back.png" alt="back" width="300"/>      | 1        |
+
+Printer settings:
+- All printed parts designed for PETG. 
+- Best experience on my printer was to print the front upside down (the actual front of the case facing the print bed) as this does not require any supports. For a cleaner look you can consider to print it reversed with ironing enabled but note that this requires a lot of support material. 
+- Using fuzzy skin for all outside walls creates a nice touch
+- No rafts/brim etc. reguired for any model.
+
+### Required screws
+
+| Name              | Spec                          | Required | Notes |
+| ----------------- | ----------------------------- | -------- | ------|
+| countersunk screw | M3 5mm, e.g. DIN EN ISO 4762  | 4        | To attach ESP to back of housing |
+| countersunk screw | M3 10mm, e.g. DIN EN ISO 4762 | 4        | To attach display to back of housing |
+| countersunk screw | M3 10mm, e.g. DIN EN ISO 4762 | 4        | To fix back and front of housing |
+
+### Assembly
+
+All electronics are screwed to the back of the housing, finally the front of the housing is snapped into the back and tightened via the screws from the back.
+
+![assembly](./print/rendering/assembly.gif)
+
+
 
 ## Installation
 
