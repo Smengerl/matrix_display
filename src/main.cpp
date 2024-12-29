@@ -7,17 +7,47 @@
 #include <WiFi.h>
 #include "ESPDateTime.h"
 #include "config.h"
+#include "esp_bt.h"
 
 
+// ***********************************************************
+// NTP SETTINGS
+// ***********************************************************
 // Servername NTP
 #define NTP_SERVER "pool.ntp.org"
 
+// Timezone
+#define TIMEZONE "CET-1CEST,M3.5.0,M10.5.0/3"
+
+// Adapt to a reasonable timeout to try to sync with NTP server (full roundtrip time),
+// however, in current simple implementation, this affects framerate of display refresh during sync
+#define NTP_SYNC_TIMEOUT 400
+
+
+// ***********************************************************
+// DISPLAY SETTINGS
+// ***********************************************************
 // LED matrix intensity from 0...0x0f (brightest)
 #define LED_INTENSITY 0x00
 // LED matrix inverted?
 #define INVERT false
 
+// Animation for old time to disappear
+#define OUT_ANIMATION_SPEED 50
+#define OUT_ANIMATION_MODE PA_SCROLL_UP
 
+// Animaton for new time to appear
+#define IN_ANIMATION_SPEED 50
+#define IN_ANIMATION_MODE PA_SCROLL_UP
+
+// Animation for all messages to user on display
+#define DEFAULT_ANIMATION_SPEED 50
+#define DEFAULT_ANIMATION_STOP 1500
+
+
+// ***********************************************************
+// HW SETTINGS
+// ***********************************************************
 // GPIO-Pins
 #define PIN_NUM_MOSI GPIO_NUM_23
 #define PIN_NUM_CLK  GPIO_NUM_5
@@ -27,25 +57,11 @@
 #define HARDWARE_TYPE MD_MAX72XX::FC16_HW 
 #define MAX7219_NUM_DEVICES 4 
 
+// Time in ms for sleep cycle
+#define DEEP_SLEEP_CYCLE 1000
 
 
-#define TIMEZONE "CET-1CEST,M3.5.0,M10.5.0/3"
 
-
-#define OUT_ANIMATION_SPEED 50
-#define OUT_ANIMATION_MODE PA_SCROLL_UP
-
-#define IN_ANIMATION_SPEED 50
-#define IN_ANIMATION_MODE PA_SCROLL_UP
-
-
-// Animation for all messages to user on display
-#define DEFAULT_ANIMATION_SPEED 50
-#define DEFAULT_ANIMATION_STOP 1500
-
-// Adapt to a reasonable timeout to try to sync with NTP server (full roundtrip time),
-// however, in current simple implementation, this affects framerate of display refresh during sync
-#define NTP_SYNC_TIMEOUT 400
 
 
 
@@ -140,6 +156,34 @@ void setupWiFi() {
   }
 }
 
+void disableWiFi() {
+  WiFi.disconnect(true);
+  WiFi.mode(WIFI_OFF);
+  Serial.println("WiFi disabled");
+}
+
+// Function to disable Bluetooth
+void disableBluetooth() {
+  if (esp_bt_controller_get_status() == ESP_BT_CONTROLLER_STATUS_ENABLED) {
+      esp_err_t ret = esp_bt_controller_disable();
+      if (ret != ESP_OK) {
+          Serial.printf("Bluetooth disable failed: %s\n", esp_err_to_name(ret));
+          return;
+      }
+  }
+
+  if (esp_bt_controller_get_status() == ESP_BT_CONTROLLER_STATUS_INITED) {
+      esp_err_t ret = esp_bt_controller_deinit();
+      if (ret != ESP_OK) {
+          Serial.printf("Bluetooth deinit failed: %s\n", esp_err_to_name(ret));
+          return;
+      }
+  }
+
+  Serial.println("Bluetooth disabled");
+}
+
+
 
 const uint8_t battery_begin[] = {
   3,
@@ -178,9 +222,35 @@ const uint8_t battery_segment_full[] = {
 void setup() {
   Serial.begin(115200);
 
+  disableBluetooth();
+
   setupMatrixDisplay();
+
+  // Sync with NTP only on initial startup. After that, power off Wifi to save energy
   setupWiFi();
   setupDateTime();
+  disableWiFi();
+}
+
+
+
+
+
+void sleepForNextMinute() {
+  // Sleep until next full minute
+  time_t now = DateTime.now();
+  struct tm *tm = localtime(&now);
+  long sleepTime = (60 - tm->tm_sec) * 1000; // ms
+
+  // Implement deep sleep functionality here
+  Serial.printf("\nEntering sleep for %dms...\n", sleepTime);
+
+  // Advise FreeRTOS to wait for up to this amount of time
+  vTaskDelay(pdMS_TO_TICKS(sleepTime));
+
+// Using deep sleep requires some rework as all initialization would need to be redone and setup routine is called again on wakeup
+//  esp_sleep_enable_timer_wakeup( * 1000);
+//  esp_deep_sleep_start();
 }
 
 
@@ -220,9 +290,11 @@ void loop() {
     do {
       Serial.print(".");
     } while (!ledMatrix->displayAnimate());
-    Serial.print("\nIdling");
+
+  } else {
+    Serial.print("Loop function called but no further minute has passed. Is sleep cycle correctly configured?\n");
   }
 
-  Serial.print(".");
-  vTaskDelay(pdMS_TO_TICKS(1000));
+  sleepForNextMinute();
 }
+
