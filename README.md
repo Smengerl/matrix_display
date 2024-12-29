@@ -31,8 +31,7 @@ Renderings / Prototype:
 
 
 The only mechanical part required is the housing which consists of a front and a back piece.
-
-You can optionally ad
+Using the acrylic plate on top of the LED matrix display is optional but gives a cleaner look (not used in the example photos)
 
 ### 3D-Printed Parts
 
