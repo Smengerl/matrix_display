@@ -27,7 +27,7 @@ Renderings / Prototype:
 | Front                                                | Back                                                 | Isometric |
 | ---------------------------------------------------- | ---------------------------------------------------- | --------- |
 | <img src="./print/rendering/front.png" alt="front"/> | <img src="./print/rendering/back.png" alt="back"/>   | <img src="./print/rendering/iso.png" alt="iso"/> |
-| <img src="./print/photos/front.png" alt="front"/> | <img src="./print/photos/back.png" alt="back"/>   | <img src="./print/photos/iso.png" alt="iso"/> |
+| <img src="./print/photos/front.jpg" alt="front"/> | <img src="./print/photos/back.jpg" alt="back"/>   | <img src="./print/photos/iso.jpg" alt="iso"/> |
 
 
 The only mechanical part required is the housing which consists of a front and a back piece.
