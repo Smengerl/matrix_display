@@ -1,19 +1,13 @@
 # LED Matrix Retro Clock
 
 A retro style clock with matrix LED display using an ESP32 microcontroller with automatic NTP time sync.
-
-Renderings / Prototype:
-| Front                                                | Back                                                 | Isometric |
-| ---------------------------------------------------- | ---------------------------------------------------- | --------- |
-| <img src="./print/rendering/fully_assembled_front.png" alt="front"/> | <img src="./print/rendering/fully_assembled_back.png" alt="back"/>   | <img src="./print/rendering/fully_assembled_iso.png" alt="iso"/> |
-
-
-## Features
-
 - Displays the current time in HH:MM format
 - 4 Digit LED matrix display (8x8 pixel)
 - Customizable animations, dimming and 
 - Automatic time synchronization using NTP
+
+<img src="./print/photos/example_usage.jpg" alt="example_usage"/>
+
 
 ## Hardware Requirements
 
@@ -29,16 +23,23 @@ Renderings / Prototype:
 
 ## Mechanics
 
+Renderings / Prototype:
+| Front                                                | Back                                                 | Isometric |
+| ---------------------------------------------------- | ---------------------------------------------------- | --------- |
+| <img src="./print/rendering/front.png" alt="front"/> | <img src="./print/rendering/back.png" alt="back"/>   | <img src="./print/rendering/iso.png" alt="iso"/> |
+| <img src="./print/photos/front.png" alt="front"/> | <img src="./print/photos/back.png" alt="back"/>   | <img src="./print/photos/iso.png" alt="iso"/> |
+
+
 The only mechanical part required is the housing which consists of a front and a back piece.
 
 You can optionally ad
 
 ### 3D-Printed Parts
 
-| Filename                     | Thumbnail                                                           | Required | Notes |
-| ---------------------------- | --------------------------------------------------------------------| -------- | ------|
-| `./print/front.stl`          | <img src="./print/rendering/front.png" alt="front" width="300"/>    | 1        | |
-| `./print/back.stl`           | <img src="./print/rendering/back.png" alt="back" width="300"/>      | 1        | |
+| Filename                     | Thumbnail                                                                | Required | Notes |
+| ---------------------------- | -------------------------------------------------------------------------| -------- | ------|
+| `./print/frontside.stl`      | <img src="./print/rendering/frontside.png" alt="frontside" width="300"/> | 1        | |
+| `./print/backside.stl`       | <img src="./print/rendering/backside.png" alt="backside" width="300"/>   | 1        | |
 
 Printer settings:
 - All printed parts designed for PETG. 
