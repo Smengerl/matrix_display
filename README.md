@@ -31,12 +31,14 @@ Renderings / Prototype:
 
 The only mechanical part required is the housing which consists of a front and a back piece.
 
+You can optionally ad
+
 ### 3D-Printed Parts
 
-| Filename                     | Thumbnail                                                           | Required |
-| ---------------------------- | --------------------------------------------------------------------| -------- |
-| `./print/front.stl`          | <img src="./print/rendering/front.png" alt="front" width="300"/>    | 1        |
-| `./print/back.stl`           | <img src="./print/rendering/back.png" alt="back" width="300"/>      | 1        |
+| Filename                     | Thumbnail                                                           | Required | Notes |
+| ---------------------------- | --------------------------------------------------------------------| -------- | ------|
+| `./print/front.stl`          | <img src="./print/rendering/front.png" alt="front" width="300"/>    | 1        | |
+| `./print/back.stl`           | <img src="./print/rendering/back.png" alt="back" width="300"/>      | 1        | |
 
 Printer settings:
 - All printed parts designed for PETG. 
@@ -44,17 +46,20 @@ Printer settings:
 - Using fuzzy skin for all outside walls creates a nice touch
 - No rafts/brim etc. reguired for any model.
 
-### Required screws
+### Required parts
 
 | Name              | Spec                          | Required | Notes |
 | ----------------- | ----------------------------- | -------- | ------|
 | countersunk screw | M3 5mm, e.g. DIN EN ISO 4762  | 4        | To attach ESP to back of housing |
 | countersunk screw | M3 10mm, e.g. DIN EN ISO 4762 | 4        | To attach display to back of housing |
 | countersunk screw | M3 10mm, e.g. DIN EN ISO 4762 | 4        | To fix back and front of housing |
+| semi-transparent acrylic board | max 2mm, 140-150mm * 33-35mm | 1        | Optional, for cleaner look |
 
 ### Assembly
 
-All electronics are screwed to the back of the housing, finally the front of the housing is snapped into the back and tightened via the screws from the back.
+- All electronics are screwed to the back of the housing.
+- The acrylic plate is glued to the front.
+- Finally the front of the housing is snapped into the back and tightened via the screws from the back.
 
 ![assembly](./print/rendering/assembly.gif)
 
