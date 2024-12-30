@@ -81,8 +81,5 @@ Printer settings:
 - Wait for NTP sync
 - The current time will be displayed on the LED matrix.
 
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
-
 ## Acknowledgements
 MD_Parola library by MajicDesigns
