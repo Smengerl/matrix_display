@@ -4,3 +4,4 @@ lib
 include
 test
 sdkconfig.esp32dev
+src/unused.c

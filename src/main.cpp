@@ -9,6 +9,9 @@
 #include "config.h"
 #include "esp_bt.h"
 
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <freertos/semphr.h>
 
 // ***********************************************************
 // NTP SETTINGS
@@ -19,9 +22,8 @@
 // Timezone
 #define TIMEZONE "CET-1CEST,M3.5.0,M10.5.0/3"
 
-// Adapt to a reasonable timeout to try to sync with NTP server (full roundtrip time),
-// however, in current simple implementation, this affects framerate of display refresh during sync
-#define NTP_SYNC_TIMEOUT 400
+// Max roundtrip time for NTP sync in ms
+#define NTP_SYNC_TIMEOUT 15000
 
 
 // ***********************************************************
@@ -77,54 +79,52 @@ void setupMatrixDisplay() {
   ledMatrix->setIntensity(LED_INTENSITY); // set the brightness of the LED matrix display (from 0 to 15)
   ledMatrix->setInvert(INVERT);
   ledMatrix->displayClear();  // clear led matrix display
-/*
-  // Add custom characters to the MD_Parola instance
-  ledMatrix->addChar('(', battery_begin);
-  ledMatrix->addChar(')', battery_end);
-  ledMatrix->addChar('_', battery_segment_empty);
-  ledMatrix->addChar('|', battery_segment_full);
-  ledMatrix->setCharSpacing(0);
-*/
 }
 
-/*
-void connectWiFi() {
-  ledMatrix->displayText("WiFi Init", PA_CENTER, 50, 1000, PA_SCROLL_LEFT, PA_FADE);
-  Serial.print("WiFi connecting... ");
 
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
-  while (WiFi.status() != WL_CONNECTED) {
-    if (ledMatrix->displayAnimate()) {
-      ledMatrix->displayReset();
-    }
-    Serial.print(".");
-//    vTaskDelay(pdMS_TO_TICKS(100));
-  }
-  Serial.println(" connected.\n");
-}
-*/
 
-void setupDateTime() {
-  ledMatrix->displayText("NTP Sync", PA_CENTER, DEFAULT_ANIMATION_SPEED, DEFAULT_ANIMATION_STOP, PA_SCROLL_LEFT, PA_FADE);
-  ledMatrix->displayAnimate();
+SemaphoreHandle_t ntpSyncSemaphore = NULL;
 
+void DateTimeTask(void *pvParameters) {
+  
   Serial.print("NTP synching, please wait... ");
 
   DateTime.setServer(NTP_SERVER);
   DateTime.setTimeZone(TIMEZONE);
 
   while (!DateTime.begin(NTP_SYNC_TIMEOUT)) {
-    if (ledMatrix->displayAnimate()) {
-      ledMatrix->displayReset();
-    }
-    Serial.print(".");
+    Serial.print("Timeout, retrying\n");
   }
   Serial.println("done");
 
   Serial.printf("Date Now is %s\n", DateTime.toISOString().c_str());
   Serial.printf("Timestamp is %ld\n", DateTime.now());
+
+  xSemaphoreGive(ntpSyncSemaphore); // Give the semaphore to signal task completion
+  vTaskDelete(NULL); // Delete this task when done
+}
+
+void setupDateTime() {
+  ledMatrix->displayText("NTP Sync", PA_CENTER, DEFAULT_ANIMATION_SPEED, DEFAULT_ANIMATION_STOP, PA_SCROLL_LEFT, PA_FADE);
+
+  ntpSyncSemaphore = xSemaphoreCreateBinary(); // Create the semaphore
+  xTaskCreate(
+    DateTimeTask, // Task function
+    "NTPSync",    // Name of the task
+    4096,         // Stack size (in words)
+    NULL,         // Task input parameter
+    1,            // Priority of the task
+    NULL          // Task handle
+  );
+
+  while (!xSemaphoreTake(ntpSyncSemaphore, pdMS_TO_TICKS(DEFAULT_ANIMATION_SPEED))) { // Check if sync is already complete, max wait time is the time for an animation frame
+    Serial.print(".");
+    if (ledMatrix->displayAnimate()) {
+      ledMatrix->displayReset();
+    }
+  }
+  vSemaphoreDelete(ntpSyncSemaphore); // Delete the semaphore
 }
 
 
@@ -182,41 +182,6 @@ void disableBluetooth() {
 
   Serial.println("Bluetooth disabled");
 }
-
-
-
-const uint8_t battery_begin[] = {
-  3,
-  0b00111100,
-  0b11111111,
-  0b10000001,
-};
-const uint8_t battery_end[] = {
-  1,
-  0b01111110
-};
-const uint8_t battery_segment_charging[] = {
-  4,
-  0b10000001,
-  0b10011101,
-  0b10010001,
-  0b10111001,
-};
-const uint8_t battery_segment_empty[] = {
-  4,
-  0b10000001,
-  0b10000001,
-  0b10000001,
-  0b10000001,
-};
-const uint8_t battery_segment_full[] = {
-  4,
-  0b10111101,
-  0b10111101,
-  0b10111101,
-  0b10000001,
-};
-
 
 
 void setup() {
@@ -281,7 +246,6 @@ void loop() {
     } while (!ledMatrix->displayAnimate());
 
 
-//    strftime(time_str, sizeof(time_str), "(|||____)", tm);
     strftime(time_str, sizeof(time_str), "%H:%M", tm);
     Serial.printf("\nCurrent time: %s", time_str);
 
