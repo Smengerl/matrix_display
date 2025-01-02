@@ -14,6 +14,9 @@ A retro style clock with matrix LED display using an ESP32 microcontroller with 
 - ESP32 (housing designed for USB C version)
 - 4 digit 8x8 LED matrix display based on MAX7219 (FC16)
 
+<img src="./schematics/schematics.jpg" alt="schematics"/>
+
+
 ## Software Requirements
 
 - PlatformIO
@@ -69,7 +72,7 @@ Printer settings:
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/Matrix_Clock.git
+   git clone https://github.com/smengerl/Matrix_Clock.git
 2. Open the project in PlatformIO.
 3. Wait for PIO to configure and download the required libraries
 4. Compile and upload the project to your ESP32 microcontroller.
