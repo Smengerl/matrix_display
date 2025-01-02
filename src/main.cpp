@@ -16,13 +16,14 @@
 // ***********************************************************
 // NTP SETTINGS
 // ***********************************************************
-// Servername NTP
-#define NTP_SERVER "pool.ntp.org"
 
-// Timezone
-#define TIMEZONE "CET-1CEST,M3.5.0,M10.5.0/3"
+/** Servername of NTP server to use to get the time from */
+#define NTP_SERVER "pool.ntp.org" 
 
-// Max roundtrip time for NTP sync in ms
+/** Which timezone we are in */
+#define TIMEZONE "CET-1CEST,M3.5.0,M10.5.0/3" 
+
+/** Max roundtrip time for NTP sync in ms */
 #define NTP_SYNC_TIMEOUT 15000
 
 
@@ -50,18 +51,14 @@
 // ***********************************************************
 // HW SETTINGS
 // ***********************************************************
-// GPIO-Pins
-#define PIN_NUM_MOSI GPIO_NUM_23
-#define PIN_NUM_CLK  GPIO_NUM_5
-#define PIN_NUM_CS   GPIO_NUM_21
+// GPIO-Pins on ESP32 for LED Matrix
+#define PIN_NUM_MOSI GPIO_NUM_23 /** Pin on ESP for MOSI signal to LED Matrix */
+#define PIN_NUM_CLK  GPIO_NUM_5  /** Pin on ESP for CLK signal to LED Matrix */
+#define PIN_NUM_CS   GPIO_NUM_21 /** Pin on ESP for CS signal to LED Matrix */
 
-// HW setup for 4 digit blue LED matrix
-#define HARDWARE_TYPE MD_MAX72XX::FC16_HW 
-#define MAX7219_NUM_DEVICES 4 
-
-// Time in ms for sleep cycle
-#define DEEP_SLEEP_CYCLE 1000
-
+// HW setup LED matrix
+#define HARDWARE_TYPE MD_MAX72XX::FC16_HW /** Hardware type of LED matrix display */
+#define MAX7219_NUM_DEVICES 4 /** Number of daisy-chained LED matrix display elements */
 
 
 
