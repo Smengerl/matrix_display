@@ -54,8 +54,8 @@ Printer settings:
 | Name              | Spec                          | Required | Notes |
 | ----------------- | ----------------------------- | -------- | ------|
 | countersunk screw | M3 5mm, e.g. DIN EN ISO 4762  | 4        | To attach ESP to back of housing |
-| countersunk screw | M3 10mm, e.g. DIN EN ISO 4762 | 4        | To attach display to back of housing |
-| countersunk screw | M3 10mm, e.g. DIN EN ISO 4762 | 4        | To fix back and front of housing |
+| countersunk screw | M3 5mm, e.g. DIN EN ISO 4762  | 4        | To attach display to back of housing |
+| cylinder head screw | M3 10mm | 4        | To fix back and front of housing |
 | semi-transparent acrylic board | max 2mm, 140-150mm * 33-35mm | 1        | Optional, for cleaner look |
 
 ### Assembly
