@@ -63,6 +63,7 @@ Printer settings:
 - All electronics are screwed to the back of the housing.
 - The acrylic plate is glued to the front.
 - Finally the front of the housing is snapped into the back and tightened via the screws from the back.
+- Consider using some hot glue to make sure everything stays in place
 
 ![assembly](./print/rendering/assembly.gif)
 
