@@ -4,6 +4,7 @@
  * smengerl wrote this file. As long as you retain this notice you
  * can do whatever you want with this stuff. If we meet some day, and you think
  * this stuff is worth it, you can buy me a beer in return.
+ * https://www.paypal.com/donate/?hosted_button_id=VANMS3GRBL4GY
  *
  * Credits (and a beer) to the author of this license:
  * https://people.freebsd.org/~phk/ 
