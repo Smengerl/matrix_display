@@ -9,20 +9,6 @@ A retro style clock with matrix LED display using an ESP32 microcontroller with 
 <img src="./print/photos/example_usage.jpg" alt="example_usage"/>
 
 
-## Hardware Requirements
-
-- ESP32 (housing designed for USB C version)
-- 4 digit 8x8 LED matrix display based on MAX7219 (FC16)
-
-<img src="./schematics/schematics.jpg" alt="schematics"/>
-
-
-## Software Requirements
-
-- PlatformIO
-- MD_Parola (via PIO)
-- ESPDateTime (via PIO) 
-- WiFiManager (via PIO)
 
 ## Mechanics
 
@@ -68,6 +54,33 @@ Printer settings:
 ![assembly](./print/rendering/assembly.gif)
 
 
+## Electronics
+
+### Part list
+
+| Unit price | Quantity | Partname                   | Example   | Notes |
+| ---------- | -------- | -------------------------- | --------- | ----- |
+| 5 USD      | 1        | ESP32 Dev module           | <a href="https://de.aliexpress.com/item/1005006474308440.html">AliExpress</a> | USB-C Version |
+| 3 USD      | 1        | 4 digit 8x8 LED matrix display based on MAX7219 (FC16) | <a href="https://de.aliexpress.com/item/1005006976020684.html">AliExpress</a> |  |
+
+Total cost under 10 USD!
+
+
+
+### Schematics
+
+<img src="./schematics/schematics.jpg" alt="schematics"/>
+
+
+
+
+
+## Software Requirements
+
+- PlatformIO
+- MD_Parola (via PIO)
+- ESPDateTime (via PIO) 
+- WiFiManager (via PIO)
 
 ## Installation
 
