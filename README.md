@@ -8,7 +8,12 @@ A retro style clock with matrix LED display using an ESP32 microcontroller with 
 
 <img src="./print/photos/example_usage.jpg" alt="example_usage"/>
 
-
+# Index
+- [Mechanic](#Mechanics)
+- [Electronics](#Electronics)
+- [Software](#Software)
+- [Usage](#Usage)
+- [Acknowledgements](#Acknowledgements)
 
 ## Mechanics
 
@@ -72,17 +77,16 @@ Total cost under 10 USD!
 <img src="./schematics/schematics.jpg" alt="schematics"/>
 
 
+## Software
 
-
-
-## Software Requirements
+### Prerequisites
 
 - PlatformIO
 - MD_Parola (via PIO)
 - ESPDateTime (via PIO) 
 - WiFiManager (via PIO)
 
-## Installation
+### Installation
 
 1. Clone the repository:
    ```sh
