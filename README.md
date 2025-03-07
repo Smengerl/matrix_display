@@ -9,7 +9,7 @@ A retro style clock with matrix LED display using an ESP32 microcontroller with 
 <img src="./print/photos/example_usage.jpg" alt="example_usage"/>
 
 # Index
-- [Mechanic](#Mechanics)
+- [Mechanics](#Mechanics)
 - [Electronics](#Electronics)
 - [Software](#Software)
 - [Usage](#Usage)
