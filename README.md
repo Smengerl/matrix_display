@@ -103,4 +103,4 @@ Total cost under 10 USD!
 - The current time will be displayed on the LED matrix.
 
 ## Acknowledgements
-MD_Parola library by MajicDesigns
+- MD_Parola library by MajicDesigns
