@@ -1,0 +1,42 @@
+#-------------------------------------------
+# Template that can be used to import a given font using a set of standard extra ghlyphs
+#-------------------------------------------
+
+
+font:
+  - file: ${font_file}
+    id: ${font_id}
+    size: ${font_size}
+    bpp: 1 # Make sure to set to bpp=1 in order to have it suited for LED matrix
+    extras:
+      # http://materialdesignicons.com/cdn/7.4.47/
+      - file: 'https://github.com/Templarian/MaterialDesign-Webfont/raw/v7.4.47/fonts/materialdesignicons-webfont.ttf'
+        glyphs: [
+          $battery_0,
+          $battery_10,
+          $battery_20,
+          $battery_30,
+          $battery_40,
+          $battery_50,
+          $battery_60,
+          $battery_70,
+          $battery_80,
+          $battery_90,
+          $battery_100,
+          
+          $battery_charging_0,
+          $battery_charging_10,
+          $battery_charging_20,
+          $battery_charging_30,
+          $battery_charging_40,
+          $battery_charging_50,
+          $battery_charging_60,
+          $battery_charging_70,
+          $battery_charging_80,
+          $battery_charging_90,
+          $battery_charging_100,
+
+          $import,
+          $export,
+        ]
+

@@ -1,0 +1,65 @@
+debug:
+  update_interval: 60s
+
+sensor:
+  - platform: debug
+    free:
+      name: "Heap Free"
+      entity_category: diagnostic
+    block:
+      name: "Heap Max Block"
+      entity_category: diagnostic
+#    psram:
+#      name: "PSRAM"
+#      entity_category: diagnostic
+
+  - platform: wifi_signal
+    name: "WiFi Signal"
+    id: wifi_signal_db
+    update_interval: 60s
+    entity_category: diagnostic
+    internal: true
+
+  - platform: copy # Reports the WiFi signal strength in %
+    source_id: wifi_signal_db
+    name: "WiFi Strength"
+    filters:
+      - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
+    unit_of_measurement: "%"
+    entity_category: diagnostic
+
+
+
+
+
+
+# Generic API status sensor "connected / disconnected"
+binary_sensor:
+  - platform: status
+    name: "Status"
+
+
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "IP Address"
+      entity_category: diagnostic
+    ssid:
+      name: "Connected SSID"
+      entity_category: diagnostic
+    mac_address:
+      name: "Mac Address"
+      entity_category: diagnostic
+
+
+
+button:
+  - platform: shutdown
+    entity_category: diagnostic
+    name: "Shutdown"
+  - platform: restart
+    entity_category: diagnostic
+    name: "Restart"
+
+

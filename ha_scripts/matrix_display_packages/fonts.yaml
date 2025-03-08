@@ -1,0 +1,212 @@
+substitutions:
+  fonts_folder: ./fonts/lowres
+  default_font: "8bit Dragon (8 px)"
+  default_font_id: font_eight_bit_dragon
+
+
+
+  # Set of standard icons that are to be included in all imported fonts
+  battery_0:               "\U000F008E" # mdi:battery-outline (empty)
+  battery_10:              "\U000F007A" # mdi:battery-10
+  battery_20:              "\U000F007B" # mdi:battery-20
+  battery_30:              "\U000F007C" # mdi:battery-30
+  battery_40:              "\U000F007D" # mdi:battery-40
+  battery_50:              "\U000F007E" # mdi:battery-50
+  battery_60:              "\U000F007F" # mdi:battery-60
+  battery_70:              "\U000F0080" # mdi:battery-70
+  battery_80:              "\U000F0081" # mdi:battery-80
+  battery_90:              "\U000F0082" # mdi:battery-90
+  battery_100:             "\U000F0079" # mdi:battery
+
+  battery_charging_0:      "\U000F089F" # mdi:battery-charging-outline
+  battery_charging_10:     "\U000F089C" # mdi:battery-charging-10
+  battery_charging_20:     "\U000F0086" # mdi:battery-charging-20
+  battery_charging_30:     "\U000F0087" # mdi:battery-charging-30
+  battery_charging_40:     "\U000F0088" # mdi:battery-charging-40
+  battery_charging_50:     "\U000F089D" # mdi:battery-charging-50
+  battery_charging_60:     "\U000F0089" # mdi:battery-charging-60
+  battery_charging_70:     "\U000F089E" # mdi:battery-charging-70
+  battery_charging_80:     "\U000F008A" # mdi:battery-charging-80
+  battery_charging_90:     "\U000F008B" # mdi:battery-charging-90
+  battery_charging_100:    "\U000F0085" # mdi:battery-charging-100
+
+  export:                   "\U000F0D3E" # mdi:import
+  import:                   "\U000F0F9C" # mdi:home-import-outline
+
+
+
+
+
+  offline: "\U000F0164" # mdi:cloud-off-outline 
+
+
+packages:
+  font_1: !include # Perfect
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/Eight-Bit-Dragon.ttf"
+      font_id: $default_font_id
+      font_size: 8
+
+  font_2: !include # Alternative font size: 12
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/5by7.ttf"
+      font_id: font_5by7
+      font_size: 10
+
+  font_3: !include
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/Coolville.ttf"
+      font_id: font_Coolville
+      font_size: 16
+
+  font_4: !include # Perfect
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/editundo.ttf"
+      font_id: font_editundo
+      font_size: 14
+
+  font_5: !include
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/game over.ttf"
+      font_id: font_game_over
+      font_size: 16
+
+  font_6: !include
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/GroutpixFTorch-Regular.ttf"
+      font_id: font_GroutpixFTorch_Regular
+      font_size: 10
+
+  font_7: !include
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/ka1.ttf"
+      font_id: font_ka1
+      font_size: 9
+
+  font_8: !include # Alternative size 8, but this is only 6 pixel high 
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/Kenney Rocket Square.ttf"
+      font_id: font_Kenney_Rocket_Square
+      font_size: 8
+
+  font_9: !include # Alternative size 8, but this is only 6 pixel high 
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/Kenney Rocket.ttf"
+      font_id: font_Kenney_Rocket
+      font_size: 8
+
+  font_10: !include # Alternative size: 16 or even 8, but this is only 4 pixel high
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/minikstt.ttf"
+      font_id: font_minikstt
+      font_size: 18
+
+  font_11: !include 
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/Nihonium113.ttf"
+      font_id: font_Nihonium113
+      font_size: 16
+
+  font_12: !include # Height in size 8 is only 6 pixel
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/origa___.ttf"
+      font_id: font_origa
+      font_size: 8
+
+  font_13: !include # Height in size 8 is only 4 pixel
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/PIXY.ttf" 
+      font_id: font_PIXY
+      font_size: 8
+
+  font_14: !include
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/PXFXshadow-3.ttf"
+      font_id: font_PXFXshadow_3
+      font_size: 14
+
+  font_15: !include # Alternative fonts size is 8, which is only 4 pixel in height
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/upheavtt.ttf"
+      font_id: font_upheavtt
+      font_size: 16
+
+  font_16: !include # Alternative fonts size is 8, which is only 4 pixel in height
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/visitor1.ttf"
+      font_id: font_visitor1
+      font_size: 16
+
+  font_17: !include # Font size 8 is only 5 pixel in height
+    file: font_importer.yaml
+    vars:
+      font_file: "${fonts_folder}/Wendy-Neue.ttf"
+      font_id: font_Wendy_Neue
+      font_size: 8
+
+
+
+
+
+#-------------------------------------------
+# Fonts
+#-------------------------------------------
+# Make sure to set to bpp=1 in order to have it suited for LED matrix
+font:
+  - file: 'https://github.com/Templarian/MaterialDesign-Webfont/raw/v7.4.47/fonts/materialdesignicons-webfont.ttf'
+    id: icon_font
+    size: 10
+    bpp: 1
+    glyphs: [
+      $offline
+    ]
+
+
+
+
+select:
+  - platform: template
+    name: Font
+    id: font_select
+    options:
+      - "${default_font}"
+      - "5by7 (8 px)"
+      - "Coolville (8 px)"
+      - "editundo (8 px)"
+      - "game over (8 px)"
+      - "GroutpixFTorch-Regular (8 px)"
+      - "ka1 (8 px)"
+      - "Kenney Rocket Square (6 px)"
+      - "Kenney Rocket (6 px)"
+      - "minikstt (8 px)"
+      - "Nihonium113 (8 px)"
+      - "origa___.ttf &6 px)"
+      - "PIXY (4 px)"
+      - "PXFXshadow-3 (8 px)"
+      - "upheavtt (8px, super fat)"
+      - "Visitor1 (8px)"
+      - "Wendy-Neue (5 px)"
+
+    initial_option: "${default_font}"
+    icon: mdi:font
+    optimistic: true
+    restore_value: True
+    on_value:
+      - script.execute: trigger_rendering
+

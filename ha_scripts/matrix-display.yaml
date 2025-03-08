@@ -1,0 +1,304 @@
+substitutions:
+  name: "matrix-display"
+  friendly_name: Matrix LED Display
+  comment: Multi purpose matrix LED display
+
+  TAG: "matrix-led-display.yaml"
+
+
+packages:
+  device_basics: !include matrix_display_packages/device_basics.yaml
+  debug_basics: !include shared_packages/debug_basics.yaml
+  fonts: !include matrix_display_packages/fonts.yaml
+
+
+
+
+
+
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+  comment: ${comment}
+  name_add_mac_suffix: false
+  compile_process_limit: 1
+  includes:
+    - ./shared_packages/mutex_helper.h
+    - ./matrix_display_packages/font_helper.h
+
+  on_boot:
+    - priority: -100  # Initialization should be completely done here
+      then:
+        - lambda: |-
+            ESP_LOGI("$TAG", "Init Mutex");
+            init_mutex();
+            ESP_LOGI("$TAG", "Unlock Mutex");
+            unlock_mutex();
+            id(boot_completed) = true;
+            id(update_scrolling).execute();
+            id(update_brightness).execute();
+            id(trigger_rendering).execute();
+
+
+
+globals:
+  - id: boot_completed
+    type: bool
+    restore_value: no
+    initial_value: "false"
+
+
+
+
+# ******************************************************************************
+# Render loop
+# ******************************************************************************
+
+# https://esphome.io/components/display/max7219digit.html
+display:
+  - platform: max7219digit
+    id: led_display
+    cs_pin: $cs_pin
+    num_chips: $num_chips
+    update_interval: never
+    lambda: |-
+      if(id(wifi_id) != nullptr && id(wifi_id).is_connected()) {
+
+        auto font_index = id(font_select).active_index();
+        auto font = id($default_font_id); // default font
+        int deltaY = 0;
+
+        if (font_index.has_value()) {
+          int i = font_index.value();
+          if (!getFontBySelectId(i, &font, &deltaY)) {
+            ESP_LOGW("$TAG", "Undefined font index. Using default.");
+          }
+        } else {
+          ESP_LOGW("$TAG", "Cannot determine selected font. Using default.");
+        }
+
+        deltaY += id(verticalPos).state;
+
+        bool scroll_enable = id(scrolling).state;
+        bool text_centered = false;
+        if (!scroll_enable) {
+          text_centered = id(centered).state;
+        }
+
+
+        std::string msg = id(lcd_text).state;
+        //const char* font_string = id(font_select).state.c_str();
+        //ESP_LOGI("$TAG", "Printing [%s] in font %d / %s", msg.c_str(), font_index, font_string);
+        
+        if (text_centered) {
+          it.print(it.get_width() / 2, it.get_height() / 2 + deltaY, font, TextAlign::CENTER, msg.c_str());
+        } else {
+          it.print(0, it.get_height() / 2 + deltaY, font, TextAlign::CENTER_LEFT, msg.c_str());
+        }
+
+      } else {
+        ESP_LOGW("$TAG", "Wifi not connected");
+        it.print(it.get_width() / 2, it.get_height() / 2, id(icon_font), TextAlign::CENTER, "$offline");
+      }
+
+
+
+
+# ******************************************************************************
+# Scripts
+# ******************************************************************************
+
+script:
+  - id: update_scrolling
+    then:
+      - lambda: |-
+          if (!id(boot_completed)) {
+            ESP_LOGI("$TAG", "Update scrolling - skipped, still booting");
+          } else {
+            ESP_LOGD("$TAG", "Updating scrolling...");
+            if (lock_mutex()) {
+              bool scroll_enable = id(scrolling).state;
+              bool scroll_cont = id(scrollingCont).state;
+              auto scroll_speed = id(scrollingSpeed).state;
+              auto scroll_delay = id(scrollingDelay).state;
+              auto scroll_dwell = id(scrollingDwell).state;
+              id(led_display).scroll(scroll_enable, (scroll_cont) ? max7219digit::CONTINUOUS : max7219digit::STOP, scroll_speed, scroll_delay, scroll_dwell);
+              ESP_LOGI("$TAG", "Adapted display scrolling: Enabled=%d, Continous=%d, Speed=%fms, Delay=%fms, Dwell=%fms", scroll_enable, scroll_cont, scroll_speed, scroll_delay, scroll_dwell);
+              unlock_mutex();
+            }
+          }
+
+  - id: update_brightness
+    then:
+      - lambda: |-
+          if (!id(boot_completed)) {
+            ESP_LOGI("$TAG", "Update brightness - skipped, still booting");
+          } else {
+            ESP_LOGD("$TAG", "Updating brightness...");
+            if (lock_mutex()) {
+              int i = id(brightness).state;
+              id(led_display).intensity(i);
+              ESP_LOGI("$TAG", "Display brightness changed");
+              unlock_mutex();
+            }
+          }
+
+
+  - id: trigger_rendering
+    then:
+      - lambda: |-
+          if (!id(boot_completed)) {
+            ESP_LOGI("$TAG", "Trigger Rendering - skipped, still booting");
+          } else {
+            ESP_LOGD("$TAG", "Triggering Rendering...");
+            if (lock_mutex()) {
+              id(led_display).turn_on_off(id(display_enable).state);
+              id(led_display).invert_on_off(id(invert).state);
+              id(led_display).update();
+              unlock_mutex();
+            }
+          }
+
+
+# ******************************************************************************
+# Input / sensors / controls
+# ******************************************************************************
+
+number:
+  - platform: template
+    name: "verticalPos"
+    id: verticalPos
+    icon: "mdi:pan-vertical"
+    optimistic: true
+    min_value: -4
+    max_value: 4
+    step: 1
+    initial_value: 0
+    restore_value: True
+    on_value:
+      - script.execute: trigger_rendering
+
+  - platform: template
+    name: "Scrolling Speed in ms per px"
+    id: scrollingSpeed
+    icon: "mdi:speedometer"
+    unit_of_measurement: ms
+    optimistic: true
+    min_value: 0
+    max_value: 1000
+    step: 10
+    initial_value: 100
+    restore_value: True
+    on_value:
+      - script.execute: update_scrolling
+
+  - platform: template
+    name: "pause time at start of scrolling in ms"
+    id: scrollingDelay
+    icon: "mdi:repeat"
+    unit_of_measurement: ms
+    optimistic: true
+    min_value: 0
+    max_value: 5000
+    step: 100
+    initial_value: 1000
+    restore_value: True
+    on_value:
+      - script.execute: update_scrolling
+
+  - platform: template
+    name: "pause at end of scrolling in ms (if not scrolling continously)"
+    id: scrollingDwell
+    icon: "mdi:repeat"
+    unit_of_measurement: ms
+    optimistic: true
+    min_value: 0
+    max_value: 5000
+    step: 100
+    initial_value: 1000
+    restore_value: True
+    on_value:
+      - script.execute: update_scrolling
+
+  - platform: template
+    name: "Brightness"
+    id: brightness
+    icon: "mdi:brightness-5"
+    optimistic: true
+    min_value: 0
+    max_value: 15
+    step: 1
+    initial_value: 8
+    restore_value: True
+    on_value:
+      - script.execute: update_brightness
+
+
+text:
+  - platform: template
+    id: lcd_text
+    name: "LCD Text Input"
+    icon: "mdi:format-text-variant"
+    mode: text
+    optimistic: true
+    restore_value: true
+    initial_value: "Hello, ESPHome!"
+    on_value:
+      - script.execute: trigger_rendering
+
+switch:
+  - platform: template
+    name: "Enable Display"
+    id: display_enable
+    icon: "mdi:compare-horizontal"
+    restore_mode: RESTORE_DEFAULT_ON
+    optimistic: true
+    on_turn_on:
+      - script.execute: trigger_rendering
+    on_turn_off:
+      - script.execute: trigger_rendering
+
+  - platform: template
+    name: "Auto scroll"
+    id: scrolling
+    icon: "mdi:compare-horizontal"
+    restore_mode: RESTORE_DEFAULT_ON
+    optimistic: true
+    on_turn_on:
+      - script.execute: update_scrolling
+    on_turn_off:
+      - script.execute: update_scrolling
+
+  - platform: template
+    name: "Continous scrolling"
+    id: scrollingCont
+    icon: "mdi:compare-horizontal"
+    restore_mode: RESTORE_DEFAULT_OFF
+    optimistic: true
+    on_turn_on:
+      - script.execute: update_scrolling
+    on_turn_off:
+      - script.execute: update_scrolling
+
+  - platform: template
+    name: "Centered"
+    id: centered
+    icon: "mdi:format-align-center"
+    restore_mode: RESTORE_DEFAULT_ON
+    optimistic: true
+    on_turn_on:
+      - script.execute: trigger_rendering
+    on_turn_off:
+      - script.execute: trigger_rendering
+      
+  - platform: template
+    name: "Invert"
+    id: invert
+    icon: "mdi:invert-colors"
+    restore_mode: RESTORE_DEFAULT_OFF
+    optimistic: true
+    on_turn_on:
+      - script.execute: trigger_rendering
+    on_turn_off:
+      - script.execute: trigger_rendering
