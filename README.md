@@ -1,6 +1,6 @@
 # Multi-purpose low-cost matrix display
 
-Build on a budget of 10 USD, this matrix display is suitable for various applications such as clocks or smart home displays.
+Build on a budget of 10 USD, this 32*8 pixel LED matrix display using an ESP32 is suitable for various applications such as clocks or smart home displays.
 All mechanical and eletrical resources are provided to build it from scratch with nothing but 3D printed parts and standard electronics. 
 Full source code for some example use cases is provided.
 
@@ -8,18 +8,8 @@ Example use cases:
 | Clock with NTP sync | Solar production control panel for home assistant |
 | ------------------- | ------------------------------------------------- |
 |<img src="./print/photos/example_usage_clock.jpg" alt="example_usage" width=300/>|<img src="./print/photos/example_usage_home_assistant.jpg" alt="example_usage" width=300/>|
-| clock with matrix LED display using an ESP32 microcontroller with automatic NTP time sync.
-- Displays the current time in HH:MM format
-- 4 Digit LED matrix display (8x8 pixel)
-- Customizable animations, dimming and 
-- Automatic time synchronization using NTP
-
-| Multi-purpose home assistant display for various usecases, demonstrated by showing current solar production and HEMS state.
-- home assistant integration via ESP home
-- Displaying arbitratry text
-- Configurable parameters such as different fonts
-- integration in home assistant automation capabilities
-|
+| Standalone clock with matrix LED display with automatic NTP time sync.<BR><p>- Displays the current time in HH:MM format</p><p>- Customizable animations and dimming</p><p>- Automatic time synchronization using NTP</p> | Multi-purpose home assistant display for various usecases, demonstrated by showing current solar production and HEMS state.<BR><P>- home assistant integration via ESP home</p><p>- Displaying arbitratry text</p><p>- Configurable parameters such as different fonts</p><p>- integration in home assistant automation capabilities</p> |
+| [Explanation](#clock-with-ntp-sync) | [Explanation](#solar-production-control-panel-for-home-assistant) |
 
 
 
@@ -90,7 +80,7 @@ Total cost under 10 USD!
 
 ### Schematics
 
-<img src="./schematics/schematics.jpg" alt="schematics"/>
+![schematics](./schematics/schematics.jpg)
 
 
 
@@ -138,11 +128,11 @@ In the folder
 #### Installation
 
 1. Register the ESP to ESP home (e.g. via adopting the device via ESP home web)
-2. Rename the device to '''matrix-display (so that '''matrix-display.yaml is the .yaml of your ESP home configuration for the device)
-3. Copy the contents of '''./ha_scripts to '''[homeassistant]/config/esphome, replacing '''matrix-display.yaml
+2. Rename the device to matrix-display (so that `matrix-display.yaml` is the .yaml of your ESP home configuration for the device)
+3. Copy the contents of [./ha_scripts](././ha_scripts) to the folder `[homeassistant]/config/esphome`, replacing `matrix-display.yaml`
 4. Make sure to download the fonts you want to use and put the .ttf files in the fonts subfolder. I got mine from https://www.1001fonts.com/pixel-fonts.html. Due to unclear licenses, I'm not sharing them here but you should not have any issue finding them by the name in the code on that page. If you want other fonts, you should have no issues adapting the code as all is in fonts.yaml and font_helper.h.
-5. Tailor fonts.yaml, if you want to use further material-design icons than the one I had added as an example 
-6. Finally open '''matrix-display.yaml in ESP home and install update to device
+5. Tailor `fonts.yaml`, if you want to use further material-design icons than the one I had added as an example 
+6. Finally open `matrix-display.yaml` in ESP home and install update to device
 7. After the new software is installed, your home assistant should have discovered a new device. Set up the device giving it a name (in the following I assume you called it again matrix_display) and you are ready to go. 
 
 
@@ -153,6 +143,7 @@ In the folder
 - All values can now be tied to automations to write to the display (e.g. when a value changes, which you want to be displayed, then have an automation update the display text). An exanple of that is explained in the next usecase
 
 Control panel as shown in device list of home assistant:
+
 <img src="./homeassistant_device_control_panel.jpg" alt="control_panel"/>
 
 Lets use a clock as a bare-minimum example of the display's usage. The following automation is sending an updated text every minute to the display:
