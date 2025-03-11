@@ -5,11 +5,11 @@ All mechanical and eletrical resources are provided to build it from scratch wit
 Full source code for some example use cases is provided.
 
 Example use cases:
-| Clock with NTP sync | Solar production control panel for home assistant |
+| Clock with NTP sync | Solar production panel for home assistant |
 | ------------------- | ------------------------------------------------- |
 |<img src="./print/photos/example_usage_clock.jpg" alt="example_usage" width=300/>|<img src="./print/photos/example_usage_home_assistant.jpg" alt="example_usage" width=300/>|
-| Standalone clock with matrix LED display with automatic NTP time sync.<BR><p>- Displays the current time in HH:MM format</p><p>- Customizable animations and dimming</p><p>- Automatic time synchronization using NTP</p> | Multi-purpose home assistant display for various usecases, demonstrated by showing current solar production and HEMS state.<BR><P>- home assistant integration via ESP home</p><p>- Displaying arbitratry text</p><p>- Configurable parameters such as different fonts</p><p>- integration in home assistant automation capabilities</p> |
-| [Explanation](#clock-with-ntp-sync) | [Explanation](#solar-production-control-panel-for-home-assistant) |
+| Standalone clock with matrix LED display with automatic NTP time sync.<BR/><BR/><p>- Displays the current time in HH:MM format</p><p>- Customizable animations and dimming</p><p>- Automatic time synchronization using NTP</p> | Multi-purpose home assistant display for various usecases, demonstrated by showing current solar production and HEMS state.<BR/><BR/><P>- home assistant integration via ESP home</p><p>- Displaying arbitratry text</p><p>- Configurable parameters such as different fonts</p><p>- integration in home assistant automation capabilities</p> |
+| [Go to Example](#clock-with-ntp-sync) | [Go to Example](#solar-production-control-panel-for-home-assistant) |
 
 
 
@@ -115,10 +115,13 @@ This straightforward example is based on PIO and comes as a standalone applicati
 - The current time will be displayed on the LED matrix.
 
 
+
+
+
+
 ### Generic home assistant display
 
-In order to tie in to home assistant, we build on ESP home.
-In the folder
+In order to tie in to home assistant, we build on ESP home. Integration is basically just following the steps required for ESP home as for any device plus replacing the yaml configuration for code generation.
 
 #### Prerequisites
 
