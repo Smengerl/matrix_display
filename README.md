@@ -1,18 +1,34 @@
-# LED Matrix Retro Clock
+# Multi-purpose low-cost matrix display
 
-A retro style clock with matrix LED display using an ESP32 microcontroller with automatic NTP time sync.
+Build on a budget of 10 USD, this matrix display is suitable for various applications such as clocks or smart home displays.
+All mechanical and eletrical resources are provided to build it from scratch with nothing but 3D printed parts and standard electronics. 
+Full source code for some example use cases is provided.
+
+Example use cases:
+| Clock with NTP sync | Solar production control panel for home assistant |
+| ------------------- | ------------------------------------------------- |
+|<img src="./print/photos/example_usage_clock.jpg" alt="example_usage" width=300/>|<img src="./print/photos/example_usage_home_assistant.jpg" alt="example_usage" width=300/>|
+| clock with matrix LED display using an ESP32 microcontroller with automatic NTP time sync.
 - Displays the current time in HH:MM format
 - 4 Digit LED matrix display (8x8 pixel)
 - Customizable animations, dimming and 
 - Automatic time synchronization using NTP
 
-<img src="./print/photos/example_usage.jpg" alt="example_usage"/>
+| Multi-purpose home assistant display for various usecases, demonstrated by showing current solar production and HEMS state.
+- home assistant integration via ESP home
+- Displaying arbitratry text
+- Configurable parameters such as different fonts
+- integration in home assistant automation capabilities
+|
+
+
 
 # Index
 - [Mechanics](#Mechanics)
 - [Electronics](#Electronics)
-- [Software](#Software)
-- [Usage](#Usage)
+- [Usage: Clock with NTP sync](#clock-with-ntp-sync)
+- [Usage: Generic home assistant display](#generic-home-assistant-display)
+- [Usage: Solar production control panel for home assistant](#solar-production-control-panel-for-home-assistant)
 - [Acknowledgements](#Acknowledgements)
 
 ## Mechanics
@@ -77,16 +93,23 @@ Total cost under 10 USD!
 <img src="./schematics/schematics.jpg" alt="schematics"/>
 
 
-## Software
 
-### Prerequisites
+## Usage
+
+The display can be used with different software and for various applications from which I will showcase some here.  
+
+### Clock with NTP sync
+
+This straightforward example is based on PIO and comes as a standalone application using some standard libraries. After being configured to connect to your WiFi, it will get current time from NTP servers and then continously show the current time.
+
+#### Prerequisites
 
 - PlatformIO
 - MD_Parola (via PIO)
 - ESPDateTime (via PIO) 
 - WiFiManager (via PIO)
 
-### Installation
+#### Installation
 
 1. Clone the repository:
    ```sh
@@ -95,12 +118,205 @@ Total cost under 10 USD!
 3. Wait for PIO to configure and download the required libraries
 4. Compile and upload the project to your ESP32 microcontroller.
 
-
-## Usage
+#### Usage
 - Power on the ESP32.
 - On first usage only: Configure the ESP to your local WiFi. For this, connect to the ESP's access point and use the default configuration page to enter your WLAN SSID and password 
 - Wait for NTP sync
 - The current time will be displayed on the LED matrix.
 
+
+### Generic home assistant display
+
+In order to tie in to home assistant, we build on ESP home.
+In the folder
+
+#### Prerequisites
+
+- home assistant
+- ESP home
+
+#### Installation
+
+1. Register the ESP to ESP home (e.g. via adopting the device via ESP home web)
+2. Rename the device to '''matrix-display (so that '''matrix-display.yaml is the .yaml of your ESP home configuration for the device)
+3. Copy the contents of '''./ha_scripts to '''[homeassistant]/config/esphome, replacing '''matrix-display.yaml
+4. Make sure to download the fonts you want to use and put the .ttf files in the fonts subfolder. I got mine from https://www.1001fonts.com/pixel-fonts.html. Due to unclear licenses, I'm not sharing them here but you should not have any issue finding them by the name in the code on that page. If you want other fonts, you should have no issues adapting the code as all is in fonts.yaml and font_helper.h.
+5. Tailor fonts.yaml, if you want to use further material-design icons than the one I had added as an example 
+6. Finally open '''matrix-display.yaml in ESP home and install update to device
+7. After the new software is installed, your home assistant should have discovered a new device. Set up the device giving it a name (in the following I assume you called it again matrix_display) and you are ready to go. 
+
+
+#### Usage
+
+- In the device list of your home assistant, you should find the device in the ESP home integration
+- Opening the device, you should see a control panel for the display as the one below 
+- All values can now be tied to automations to write to the display (e.g. when a value changes, which you want to be displayed, then have an automation update the display text). An exanple of that is explained in the next usecase
+
+Control panel as shown in device list of home assistant:
+<img src="./homeassistant_device_control_panel.jpg" alt="control_panel"/>
+
+Lets use a clock as a bare-minimum example of the display's usage. The following automation is sending an updated text every minute to the display:
+
+```yaml
+alias: Clock
+description: ""
+triggers:
+  - trigger: time_pattern
+    seconds: "0"
+  - type: connected
+    device_id: [YOUR DEVICE ID]
+    entity_id: [YOUR ENTITY ID]
+    domain: binary_sensor
+    trigger: device
+conditions: []
+actions:
+  - action: text.set_value
+    metadata: {}
+    data:
+      value: "{{now().strftime('%H:%M')}}"
+    target:
+      entity_id: text.matrix_display_text_input
+mode: single
+```
+
+
+
+
+### Solar production control panel for home assistant
+
+A little more advanced example would be a display of current solar production and the state of the home energy management system.
+- Displaying icon for home battery SOC
+- Whether energy is fed from grid or taken from grid
+- Current solar production (kW) 
+
+All the necessary preconditions such as the material design icons are already foreseen in the .yaml files if you haven't modified them.
+All you need to do is to add another automation. This is the one I use (using a Huawei solar system in home assistant)
+
+```yaml
+alias: Display solar production
+description: ""
+triggers:
+  - entity_id: sensor.inverter_input_power
+    trigger: state
+  - entity_id: sensor.battery_state_of_capacity
+    trigger: state
+  - entity_id: sensor.power_meter_active_power
+    trigger: state
+  - type: connected
+    device_id: [YOUR DEVICE ID]
+    entity_id: [YOUR ENTITY ID]
+    domain: binary_sensor
+    trigger: device
+conditions: []
+actions:
+  - variables:
+      power_kw: >-
+        {{ (states('sensor.inverter_input_power') | float(0) / 1000) | round(1)
+        }}
+      power_kw_s: |-
+        {% if power_kw >= 1 %}
+          {{ power_kw | round(1) | string }}k
+        {% elif power_kw > 0 %}
+          {{ power_kw | string | replace("0.", ".") }}k
+        {% else %}
+          -k
+        {% endif %}
+      active_power: "{{ states('sensor.power_meter_active_power') | int(0) }}"
+      battery_level: "{{ states('sensor.battery_state_of_capacity') | int(0) }}"
+      battery_power: "{{ states('sensor.battery_charge_discharge_power') | float(0) }}"
+      mdi_icon: |-
+
+        {% if active_power > 50 %}
+          {{ "\U000F0F9C" }}
+          {# mdi:home-import-outline (exporting to grid) #}
+
+        {% elif active_power < -50 %}
+          {{ "\U000F0D3E" }}
+          {# mdi:import (importing from grid) #}
+
+        {% else %}
+
+          {% if battery_power > 0 %}
+            {% if battery_level < 10 %}
+              {{ "\U000F089F" }}
+            {% elif battery_level < 20 %}
+              {{ "\U000F089C" }}
+            {% elif battery_level < 30 %}
+              {{ "\U000F0086" }}
+            {% elif battery_level < 40 %}
+              {{ "\U000F0087" }}
+            {% elif battery_level < 50 %}
+              {{ "\U000F0088" }}
+            {% elif battery_level < 60 %}
+              {{ "\U000F089D" }}
+            {% elif battery_level < 70 %}
+              {{ "\U000F0089" }}
+            {% elif battery_level < 80 %}
+              {{ "\U000F089E" }}
+            {% elif battery_level < 90 %}
+              {{ "\U000F008A" }}
+            {% elif battery_level < 100 %}
+              {{ "\U000F008B" }}
+            {% else %}
+              {{ "\U000F0085" }}
+            {% endif %}
+
+
+          
+          {% else %}
+
+            {% if battery_level < 10 %}
+              {{ "\U000F008E" }}
+            {% elif battery_level < 20 %}
+              {{ "\U000F007A" }}
+            {% elif battery_level < 30 %}
+              {{ "\U000F007B" }}
+            {% elif battery_level < 40 %}
+              {{ "\U000F007C" }}
+            {% elif battery_level < 50 %}
+              {{ "\U000F007D" }}
+            {% elif battery_level < 60 %}
+              {{ "\U000F007E" }}
+            {% elif battery_level < 70 %}
+              {{ "\U000F007F" }}
+            {% elif battery_level < 80 %}
+              {{ "\U000F0080" }}
+            {% elif battery_level < 90 %}
+              {{ "\U000F0081" }}
+            {% elif battery_level < 100 %}
+              {{ "\U000F0082" }}
+            {% else %}
+              {{ "\U000F0079" }}
+            {% endif %}
+
+
+          {% endif %}
+
+        {% endif %}
+  - if:
+      - condition: template
+        value_template: "{{ active_power > 50 }}"
+    then:
+      - action: text.set_value
+        metadata: {}
+        data:
+          value: "{{ mdi_icon }} {{ power_kw_s }}"
+        target:
+          entity_id: text.matrix_display_text_input
+    else:
+      - action: text.set_value
+        metadata: {}
+        data:
+          value: "{{ mdi_icon }} {{ power_kw_s }}"
+        target:
+          entity_id: text.matrix_display_text_input
+mode: single
+```
+
+
+
+
 ## Acknowledgements
 - MD_Parola library by MajicDesigns
+- home assistant
+- ESP home
