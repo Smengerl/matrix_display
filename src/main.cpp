@@ -226,10 +226,10 @@ void loop() {
   struct tm *tm = localtime(&now);
 
   // Adjust for daylight saving time if necessary
-  if (tm->tm_isdst > 0) {
-    tm->tm_hour += 1;
-    mktime(tm); // Normalize the time structure
-  }
+  //if (tm->tm_isdst > 0) {
+  //  tm->tm_hour += 1;
+  //  mktime(tm); // Normalize the time structure
+  //}
 
 
   if (tm->tm_min != lastMin || tm->tm_hour != lastHour ) {
