@@ -52,3 +52,6 @@ inline bool unlock_mutex() {
   }
   return false;
 }
+
+
+#undef TAG

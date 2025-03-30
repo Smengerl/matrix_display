@@ -71,7 +71,7 @@ display:
 
         if (font_index.has_value()) {
           int i = font_index.value();
-          if (!getFontBySelectId(i, &font, &deltaY)) {
+          if (!getFontBySelectId(i, font, &deltaY)) {
             ESP_LOGW("$TAG", "Undefined font index. Using default.");
           }
         } else {

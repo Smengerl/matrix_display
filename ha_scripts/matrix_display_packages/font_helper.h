@@ -1,6 +1,6 @@
 #pragma once
 
-#include "esphome/components/font/font.h";
+#include "esphome/components/font/font.h"
 
 
 // Tracing tag
@@ -82,3 +82,6 @@ inline bool getFontBySelectId(int index, esphome::font::Font *font, int *deltaY)
   }
   return true;
 }
+
+
+#undef TAG
