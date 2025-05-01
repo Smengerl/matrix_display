@@ -12,6 +12,9 @@ Example use cases:
 | [Go to Example](#clock-with-ntp-sync) | [Go to Example](#solar-production-control-panel-for-home-assistant) |
 
 
+By using different filament colors, LED panels and by using or leaving out the acrylic plate, a lot of different styles can be build:
+![variations](./print/photos/variations.jpg)
+
 
 # Index
 - [Mechanics](#Mechanics)
