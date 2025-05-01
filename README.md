@@ -1,18 +1,17 @@
 # Multi-purpose low-cost matrix display
 
-Build on a budget of 10 USD, this 32*8 pixel LED matrix display using an ESP32 is suitable for various applications such as clocks or smart home displays.
-All mechanical and eletrical resources are provided to build it from scratch with nothing but 3D printed parts and standard electronics. 
-Full source code for some example use cases is provided.
+This project showcases a 32x8 pixel LED matrix display powered by an ESP32, designed for versatile applications such as clocks or smart home displays. Built on a budget of just $10, it uses 3D-printed parts and standard electronic components. Full source code and resources are provided to help you build it from scratch.
+
 
 Example use cases:
 | Clock with NTP sync | Solar production panel for home assistant |
 | ------------------- | ------------------------------------------------- |
 |<img src="./print/photos/example_usage_clock.jpg" alt="example_usage" width=300/>|<img src="./print/photos/example_usage_home_assistant.jpg" alt="example_usage" width=300/>|
-| Standalone clock with matrix LED display with automatic NTP time sync.<BR/><BR/><p>- Displays the current time in HH:MM format</p><p>- Customizable animations and dimming</p><p>- Automatic time synchronization using NTP</p> | Multi-purpose home assistant display for various usecases, demonstrated by showing current solar production and HEMS state.<BR/><BR/><P>- home assistant integration via ESP home</p><p>- Displaying arbitratry text</p><p>- Configurable parameters such as different fonts</p><p>- integration in home assistant automation capabilities</p> |
+| A standalone clock with an LED matrix display that automatically syncs time via NTP.<br><br>- Displays the current time in HH:MM format<br>- Customizable animations and dimming<br>- Automatic time synchronization using NTP | A multi-purpose Home Assistant display for various use cases, such as showing solar production and HEMS state.<br><br>- Home Assistant integration via ESPHome<br>- Displays arbitrary text<br>- Configurable parameters like fonts<br>- Integration with Home Assistant automation |
 | [Go to Example](#clock-with-ntp-sync) | [Go to Example](#solar-production-control-panel-for-home-assistant) |
 
 
-By using different filament colors, LED panels and by using or leaving out the acrylic plate, a lot of different styles can be build:
+By experimenting with different filament colors, LED panels, and optional acrylic plates, you can create a variety of styles:
 ![variations](./print/photos/variations.jpg)
 
 
@@ -33,8 +32,7 @@ Renderings / Prototype:
 | <img src="./print/photos/front.jpg" alt="front"/> | <img src="./print/photos/back.jpg" alt="back"/>   | <img src="./print/photos/iso.jpg" alt="iso"/> |
 
 
-The only mechanical part required is the housing which consists of a front and a back piece.
-Using the acrylic plate on top of the LED matrix display is optional but gives a cleaner look (not used in the example photos)
+The housing consists of a front and back piece, with an optional acrylic plate for a cleaner look (look for the difference in the example photos).
 
 ### 3D-Printed Parts
 
@@ -44,26 +42,26 @@ Using the acrylic plate on top of the LED matrix display is optional but gives a
 | `./print/backside.stl`       | <img src="./print/rendering/backside.png" alt="backside" width="300"/>   | 1        | |
 
 Printer settings:
-- All printed parts designed for PETG. 
-- Best experience on my printer was to print the front upside down (the actual front of the case facing the print bed) as this does not require any supports. For a cleaner look you can consider to print it reversed with ironing enabled but note that this requires a lot of support material. 
-- Using fuzzy skin for all outside walls creates a nice touch
-- No rafts/brim etc. reguired for any model.
+- Material: PETG
+- Recommended orientation: Print the front piece upside down (front facing the print bed) to avoid supports. For a cleaner look, print it reversed with ironing enabled, but note that this requires more support material.
+- Use "fuzzy skin" for a nice texture on the outside walls.
+- No rafts or brims are required.
 
 ### Required parts
 
-| Name              | Spec                          | Required | Notes |
-| ----------------- | ----------------------------- | -------- | ------|
-| countersunk screw | M3 5mm, e.g. DIN EN ISO 4762  | 4        | To attach ESP to back of housing |
-| countersunk screw | M3 5mm, e.g. DIN EN ISO 4762  | 4        | To attach display to back of housing |
-| cylinder head screw | M3 10mm | 4        | To fix back and front of housing |
-| semi-transparent acrylic board | max 2mm, 140-150mm * 33-35mm | 1        | Optional, for cleaner look |
+| Name              | Spec                           | Required | Notes |
+| ----------------- | ------------------------------ | -------- | ------|
+| countersunk screw | M3 5mm (e.g. DIN EN ISO 4762)  | 4        | To attach ESP to housing |
+| countersunk screw | M3 5mm (e.g. DIN EN ISO 4762)  | 4        | To attach display to the housing |
+| cylinder head screw | M3 10mm                      | 4        | To secure the front and back pieces |
+| semi-transparent acrylic board | max 2mm, 140-150mm * 33-35mm | 1        | Optional, for a cleaner look |
 
 ### Assembly
 
-- All electronics are screwed to the back of the housing.
-- The acrylic plate is glued to the front.
-- Finally the front of the housing is snapped into the back and tightened via the screws from the back.
-- Consider using some hot glue to make sure everything stays in place
+- Attach all electronics to the back of the housing using screws.
+- Glue the acrylic plate to the front (optional).
+- Snap the front and back pieces together and secure them with screws.
+- Use hot glue if needed to ensure everything stays in place.
 
 ![assembly](./print/rendering/assembly.gif)
 
@@ -75,9 +73,9 @@ Printer settings:
 | Unit price | Quantity | Partname                   | Example   | Notes |
 | ---------- | -------- | -------------------------- | --------- | ----- |
 | 5 USD      | 1        | ESP32 Dev module           | <a href="https://de.aliexpress.com/item/1005006474308440.html">AliExpress</a> | USB-C Version |
-| 3 USD      | 1        | 4 digit 8x8 LED matrix display based on MAX7219 (FC16) | <a href="https://de.aliexpress.com/item/1005006976020684.html">AliExpress</a> |  |
+| 3 USD      | 1        | 4 digit 8x8 LED matrix display (MAX7219 FC16) | <a href="https://de.aliexpress.com/item/1005006976020684.html">AliExpress</a> |  |
 
-Total cost under 10 USD!
+Total cost: under 10 USD!
 
 
 
@@ -89,11 +87,11 @@ Total cost under 10 USD!
 
 ## Usage
 
-The display can be used with different software and for various applications from which I will showcase some here.  
+The display can be used for various applications. Below are some examples:
 
 ### Clock with NTP sync
 
-This straightforward example is based on PIO and comes as a standalone application using some standard libraries. After being configured to connect to your WiFi, it will get current time from NTP servers and then continously show the current time.
+A simple standalone application that syncs time via NTP and displays it on the LED matrix
 
 #### Prerequisites
 
@@ -108,13 +106,13 @@ This straightforward example is based on PIO and comes as a standalone applicati
    ```sh
    git clone https://github.com/smengerl/Matrix_Clock.git
 2. Open the project in PlatformIO.
-3. Wait for PIO to configure and download the required libraries
-4. Compile and upload the project to your ESP32 microcontroller.
+3. Wait for PlatformIO to download the required libraries.
+4. Compile and upload the project to your ESP32.
 
 #### Usage
 - Power on the ESP32.
-- On first usage only: Configure the ESP to your local WiFi. For this, connect to the ESP's access point and use the default configuration page to enter your WLAN SSID and password 
-- Wait for NTP sync
+- On first use, connect to the ESP32's access point and configure your WiFi credentials.
+- Wait for NTP synchronization.
 - The current time will be displayed on the LED matrix.
 
 
@@ -124,7 +122,7 @@ This straightforward example is based on PIO and comes as a standalone applicati
 
 ### Generic home assistant display
 
-In order to tie in to home assistant, we build on ESP home. Integration is basically just following the steps required for ESP home as for any device plus replacing the yaml configuration for code generation.
+This example integrates the display with Home Assistant using ESPHome.
 
 #### Prerequisites
 
@@ -133,26 +131,23 @@ In order to tie in to home assistant, we build on ESP home. Integration is basic
 
 #### Installation
 
-1. Register the ESP to ESP home (e.g. via adopting the device via ESP home web)
+1. Register the ESP32 with ESPHome (e.g., via ESPHome Web).
 2. Rename the device to matrix-display (so that `matrix-display.yaml` is the .yaml of your ESP home configuration for the device)
 3. Copy the contents of [./ha_scripts](././ha_scripts) to the folder `[homeassistant]/config/esphome`, replacing `matrix-display.yaml`
-4. Make sure to download the fonts you want to use and put the .ttf files in the fonts subfolder. I got mine from https://www.1001fonts.com/pixel-fonts.html. Due to unclear licenses, I'm not sharing them here but you should not have any issue finding them by the name in the code on that page. If you want other fonts, you should have no issues adapting the code as all is in fonts.yaml and font_helper.h.
-5. Tailor `fonts.yaml`, if you want to use further material-design icons than the one I had added as an example 
-6. Finally open `matrix-display.yaml` in ESP home and install update to device
-7. After the new software is installed, your home assistant should have discovered a new device. Set up the device giving it a name (in the following I assume you called it again matrix_display) and you are ready to go. 
+4. Download the desired fonts and place them in the fonts subfolder. Fonts can be found at [1001fonts.com](https://www.1001fonts.com/pixel-fonts.html). Due to unclear licenses, I'm not sharing them here but you should not have any issue finding them by the name in the code on that page. If you want other fonts, you should have no issues adapting the code as all is in fonts.yaml and font_helper.h.
+5. Customize `fonts.yaml` if needed, e.g. if you want to use further material-design icons than the one I had added as an example 
+6. Open `matrix-display.yaml` in ESPHome and upload the configuration to the device.
+7. Once installed, the device will appear in Home Assistant. Set up the device giving it a name (in the following I assume you called it again matrix_display) and you are ready to go. 
 
 
 #### Usage
 
-- In the device list of your home assistant, you should find the device in the ESP home integration
-- Opening the device, you should see a control panel for the display as the one below 
-- All values can now be tied to automations to write to the display (e.g. when a value changes, which you want to be displayed, then have an automation update the display text). An exanple of that is explained in the next usecase
 
-Control panel as shown in device list of home assistant:
-
+The device will show up in Home Assistant under the ESPHome integration.
 <img src="./homeassistant_device_control_panel.jpg" alt="control_panel"/>
 
-Lets use a clock as a bare-minimum example of the display's usage. The following automation is sending an updated text every minute to the display:
+
+Use automations to update the display text based on events. For example, the following automation updates the display every minute:
 
 ```yaml
 alias: Clock
@@ -181,13 +176,12 @@ mode: single
 
 ### Solar production control panel for home assistant
 
-A little more advanced example would be a display of current solar production and the state of the home energy management system.
-- Displaying icon for home battery SOC
-- Whether energy is fed from grid or taken from grid
-- Current solar production (kW) 
+This example displays solar production data and the state of your home energy management system (HEMS).
 
-All the necessary preconditions such as the material design icons are already foreseen in the .yaml files if you haven't modified them.
-All you need to do is to add another automation. This is the one I use (using a Huawei solar system in home assistant)
+Features:
+- Displays battery state of charge (SOC) as an icon.
+- Shows whether energy is being imported or exported to the grid.
+- Displays current solar production in kW.
 
 ```yaml
 alias: Display solar production
