@@ -22,6 +22,9 @@ esphome:
   friendly_name: ${friendly_name}
   comment: ${comment}
   name_add_mac_suffix: false
+  project:
+    name: matrix_display.esphome
+    version: '1.0'
   compile_process_limit: 1
   includes:
     - ./shared_packages/mutex_helper.h

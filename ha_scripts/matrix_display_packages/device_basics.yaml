@@ -5,6 +5,12 @@ substitutions:
   num_chips: "4"
 
 
+# Displays a notification in case the device need to be updated
+dashboard_import:
+  package_import_url: github://esphome/example-configs/esphome-web/esp32.yaml@main
+  import_full_config: true
+
+
 # Use ESP IDF framework
 esp32:
   board: esp32dev
