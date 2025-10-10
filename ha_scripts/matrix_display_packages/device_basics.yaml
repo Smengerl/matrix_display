@@ -5,41 +5,58 @@ substitutions:
   num_chips: "4"
 
 
-# Displays a notification in case the device need to be updated
-dashboard_import:
-  package_import_url: github://esphome/example-configs/esphome-web/esp32.yaml@main
-  import_full_config: true
-
-
 # Use ESP IDF framework
 esp32:
   board: esp32dev
   framework:
     type: esp-idf
 
+
 # Enable logging
 logger:
-  level: VERBOSE
 
 # Enable Home Assistant API
 api:
+  encryption:
+    key: ${api_key}
 
-# Allow Over-The-Air updates
 ota:
-  - platform: esphome
-    password: "3f6786b29f445e0ac078c0bfec10c81d"
+  platform: esphome
+  password: ${ota_pw}
 
+# Allow provisioning Wi-Fi via serial
+improv_serial:
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  on_connect:
+    then:
+      - lambda: |-
+          ESP_LOGI("$TAG", "WiFi Connect");
+          id(trigger_rendering).execute();
+          
+  on_disconnect:
+    then:
+      - lambda: |-
+          ESP_LOGI("$TAG", "WiFi Disconnect");
+          id(trigger_rendering).execute();
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: ${fallback_hotspot_ssid} 
+    password: ${fallback_hotspot_pw} 
+    
 
 # In combination with the `ap` this allows the user
 # to provision wifi credentials to the device via WiFi AP.
 captive_portal:
 
-# Allow provisioning Wi-Fi via serial
-#improv_serial:
-
-#dashboard_import:
-#  package_import_url: github://esphome/example-configs/esphome-web/esp32.yaml@main
-#  import_full_config: true
+# Displays a notification in case the device need to be updated
+dashboard_import:
+  package_import_url: github://esphome/example-configs/esphome-web/esp32.yaml@main
+  import_full_config: true
 
 
 # Sets up Bluetooth LE (Only on ESP32) to allow the user
@@ -69,27 +86,6 @@ spi:
 
 
 
-
-# Setup Wifi
-wifi:
-  id: wifi_id
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
-  on_connect:
-    then:
-      - lambda: |-
-          ESP_LOGI("$TAG", "WiFi Connect");
-          id(trigger_rendering).execute();
-  on_disconnect:
-    then:
-      - lambda: |-
-          ESP_LOGI("$TAG", "WiFi Disconnect");
-          id(trigger_rendering).execute();
-
-  # Enable fallback hotspot (captive portal) in case wifi connection fails
-  ap:
-    ssid: "LED Matrix Fallback Hotspot"
-    password: "238asdqvasd3t4d"
 
 
 

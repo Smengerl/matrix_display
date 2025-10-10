@@ -2,8 +2,18 @@ substitutions:
   name: "matrix-display"
   friendly_name: Matrix LED Display
   comment: Multi purpose matrix LED display
+  project_name: color_matrix_display.esphome
 
-  TAG: "matrix-led-display.yaml"
+  TAG: "color-matrix-display.yaml"
+
+
+
+
+  api_key: "gWZk7HnWJ3uYfXg6mKzZq9uKxv3QbFJZkRz2cDqKxgE="
+  ota_pw: "3f6786b29f445e0ac078c0bfe2e0c81d"
+  fallback_hotspot_ssid: "Color Matrix Fallback Hotspot"
+  fallback_hotspot_pw: "238asdqvasd3t4d"
+
 
 
 packages:
@@ -23,7 +33,7 @@ esphome:
   comment: ${comment}
   name_add_mac_suffix: false
   project:
-    name: matrix_display.esphome
+    name: ${project_name} 
     version: '1.0'
   compile_process_limit: 1
   includes:
