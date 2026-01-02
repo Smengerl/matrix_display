@@ -28,6 +28,7 @@ ota:
 improv_serial:
 
 wifi:
+  id: wifi_id
   ssid: !secret wifi_ssid
   password: !secret wifi_password
 
@@ -73,7 +74,9 @@ dashboard_import:
 
 # Configure LED Matrix Pinout
 spi:
-  clk_pin: $clk_pin
+  clk_pin:     
+    number: $clk_pin
+    ignore_strapping_warning: true
   mosi_pin: $mosi_pin
 
 # time:
