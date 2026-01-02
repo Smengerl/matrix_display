@@ -1,5 +1,9 @@
 # Multi-purpose low-cost matrix display
 
+[![3D Printing](https://img.shields.io/badge/3D_printing-STL-green)](#)
+[![ESPhome](https://img.shields.io/badge/homeassistant-ESPhome-green)](#)
+[![License](https://img.shields.io/badge/license-Beerware-green)](#)
+
 This project showcases a 32x8 pixel LED matrix display powered by an ESP32, designed for versatile applications such as clocks or smart home displays. Built on a budget of just $10, it uses 3D-printed parts and standard electronic components. Full source code and resources are provided to help you build it from scratch.
 
 
