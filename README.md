@@ -42,8 +42,8 @@ The housing consists of a front and back piece, with an optional acrylic plate f
 
 | Filename                     | Thumbnail                                                                | Required | Notes |
 | ---------------------------- | -------------------------------------------------------------------------| -------- | ------|
-| `./print/frontside.stl`      | <img src="./print/rendering/frontside.png" alt="frontside" width="300"/> | 1        | |
-| `./print/backside.stl`       | <img src="./print/rendering/backside.png" alt="backside" width="300"/>   | 1        | |
+| `./stl/frontside.stl`      | <img src="./print/png/frontside.png" alt="frontside" width="300"/> | 1        | |
+| `./stl/backside.stl`       | <img src="./print/png/backside.png" alt="backside" width="300"/>   | 1        | |
 
 Printer settings:
 - Material: PETG
@@ -67,7 +67,7 @@ Printer settings:
 - Snap the front and back pieces together and secure them with screws.
 - Use hot glue if needed to ensure everything stays in place.
 
-![assembly](./print/rendering/assembly.gif)
+![assembly](./print/assembly.gif)
 
 
 ## Electronics
@@ -322,6 +322,8 @@ mode: single
 
 Contributions are welcome.  
 See `CONTRIBUTING.md` for details and follow the `CODE_OF_CONDUCT.md` when contributing.
+
+All .stl, .png, and assembly pictures are automatically exported via my Fusion add-in, see [here](https://github.com/smengerl/fusion-exporter)
 
 ## License
 
