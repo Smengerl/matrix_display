@@ -2,7 +2,7 @@
 
 [![3D Printing](https://img.shields.io/badge/3D_printing-STL-green)](#)
 [![ESPhome](https://img.shields.io/badge/homeassistant-ESPhome-green)](#)
-[![License](https://img.shields.io/badge/license-Beerware-green)](#)
+[![License](https://img.shields.io/badge/license-CC%20BY--SA%204.0-blue)](http://creativecommons.org/licenses/by-sa/4.0/)
 
 This project showcases a 32x8 pixel LED matrix display powered by an ESP32, designed for versatile applications such as clocks or smart home displays. Built on a budget of just $10, it uses 3D-printed parts and standard electronic components. Full source code and resources are provided to help you build it from scratch.
 
@@ -327,7 +327,7 @@ All .stl, .png, and assembly pictures are automatically exported via my Fusion a
 
 ## License
 
-This project is licensed under the Beerware License — see `LICENSE.txt` for details.
+This project is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0) — see `LICENSE.txt` for details or visit http://creativecommons.org/licenses/by-sa/4.0/
 
 ## Authors
 
