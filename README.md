@@ -6,6 +6,15 @@
 
 This project showcases a 32x8 pixel LED matrix display powered by an ESP32, designed for versatile applications such as clocks or smart home displays. Built on a budget of just $10, it uses 3D-printed parts and standard electronic components. Full source code and resources are provided to help you build it from scratch.
 
+## Table of Contents
+- [Mechanics](#mechanics)
+- [Electronics](#electronics)
+- [Usage](#usage)
+- [Acknowledgements](#acknowledgements)
+- [Development](#development)
+- [License](#license)
+- [Authors](#authors)
+
 
 Example use cases:
 | Clock with NTP sync | Solar production panel for home assistant |
