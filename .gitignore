@@ -5,3 +5,5 @@ include
 test
 sdkconfig.esp32dev
 src/unused.c
+.DS_Store
+print/.DS_Store
