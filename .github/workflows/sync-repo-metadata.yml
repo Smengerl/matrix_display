@@ -1,0 +1,62 @@
+name: Sync repo metadata from files
+
+on:
+  push:
+    paths:
+      - .github/topics.txt
+      - .github/description.txt
+
+jobs:
+  sync-metadata:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read topics
+        id: topics
+        run: |
+          if [ -f .github/topics.txt ]; then
+            # Read lines into a JSON array, skip empty lines
+            topics=$(grep -v '^\s*$' .github/topics.txt | jq -Rsc '[split("\n")[] | select(length > 0)]')
+          else
+            topics='[]'
+          fi
+          echo "json=$topics" >> "$GITHUB_OUTPUT"
+
+      - name: Read description
+        id: description
+        run: |
+          if [ -f .github/description.txt ]; then
+            desc=$(head -1 .github/description.txt | tr -d '\n')
+          else
+            desc=""
+          fi
+          echo "text=$desc" >> "$GITHUB_OUTPUT"
+
+      - name: Update GitHub topics
+        if: steps.topics.outputs.json != '[]'
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          curl -s -X PUT \
+            -H "Authorization: Bearer $GH_PAT" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/topics" \
+            -d "{\"names\": ${{ steps.topics.outputs.json }}}"
+
+      - name: Update GitHub description
+        if: steps.description.outputs.text != ''
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          curl -s -X PATCH \
+            -H "Authorization: Bearer $GH_PAT" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}" \
+            -d "{\"description\": \"${{ steps.description.outputs.text }}\"}"
