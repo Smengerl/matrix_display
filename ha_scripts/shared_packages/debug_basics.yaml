@@ -1,7 +1,14 @@
+#-------------------------------------------
+# Debug and Diagnostics
+# Provides system health monitoring sensors
+#-------------------------------------------
+
+# Update debug information every 60 seconds
 debug:
   update_interval: 60s
 
 sensor:
+  # Memory usage sensors to monitor heap allocation
   - platform: debug
     free:
       name: "Heap Free"
@@ -13,33 +20,31 @@ sensor:
 #      name: "PSRAM"
 #      entity_category: diagnostic
 
+  # WiFi signal strength, reported natively in dBm.
+  # Home Assistant's "signal_strength" device class only accepts dBm/dB,
+  # so the value is exposed as-is instead of being converted to a percentage.
   - platform: wifi_signal
-    name: "WiFi Signal"
+    name: "WiFi Strength"
     id: wifi_signal_db
     update_interval: 60s
     entity_category: diagnostic
-    internal: true
-
-  - platform: copy # Reports the WiFi signal strength in %
-    source_id: wifi_signal_db
-    name: "WiFi Strength"
-    filters:
-      - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
-    unit_of_measurement: "%"
-    entity_category: diagnostic
 
 
+#-------------------------------------------
+# Connection Status
+#-------------------------------------------
 
-
-
-
-# Generic API status sensor "connected / disconnected"
+# Binary sensor showing API connection state (connected/disconnected)
 binary_sensor:
   - platform: status
-    name: "Status"
+    id: connection_state
+    name: "Connection state"
 
+#-------------------------------------------
+# Network Information
+#-------------------------------------------
 
-
+# Text sensors providing WiFi connection details
 text_sensor:
   - platform: wifi_info
     ip_address:
@@ -52,8 +57,11 @@ text_sensor:
       name: "Mac Address"
       entity_category: diagnostic
 
+#-------------------------------------------
+# System Control Buttons
+#-------------------------------------------
 
-
+# Buttons to shutdown or restart the device
 button:
   - platform: shutdown
     entity_category: diagnostic
@@ -61,5 +69,3 @@ button:
   - platform: restart
     entity_category: diagnostic
     name: "Restart"
-
-
