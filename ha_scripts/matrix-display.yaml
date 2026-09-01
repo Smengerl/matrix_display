@@ -37,17 +37,12 @@ esphome:
     version: '1.0'
   compile_process_limit: 1
   includes:
-    - ./shared_packages/mutex_helper.h
     - ./matrix_display_packages/font_helper.h
 
   on_boot:
     - priority: -100  # Initialization should be completely done here
       then:
         - lambda: |-
-            ESP_LOGI("$TAG", "Init Mutex");
-            init_mutex();
-            ESP_LOGI("$TAG", "Unlock Mutex");
-            unlock_mutex();
             id(boot_completed) = true;
             id(update_scrolling).execute();
             id(update_brightness).execute();
@@ -74,7 +69,7 @@ display:
     id: led_display
     cs_pin: $cs_pin
     num_chips: $num_chips
-    update_interval: never
+    update_interval: 1s   # renders itself -> $offline shows on WiFi loss, missed content updates self-heal
     lambda: |-
       if(id(wifi_id) != nullptr && id(wifi_id).is_connected()) {
 
@@ -111,7 +106,7 @@ display:
         }
 
       } else {
-        ESP_LOGW("$TAG", "Wifi not connected");
+        ESP_LOGD("$TAG", "Wifi not connected");
         it.print(it.get_width() / 2, it.get_height() / 2, id(icon_font), TextAlign::CENTER, "$offline");
       }
 
@@ -130,16 +125,13 @@ script:
             ESP_LOGI("$TAG", "Update scrolling - skipped, still booting");
           } else {
             ESP_LOGD("$TAG", "Updating scrolling...");
-            if (lock_mutex()) {
-              bool scroll_enable = id(scrolling).state;
-              bool scroll_cont = id(scrollingCont).state;
-              auto scroll_speed = id(scrollingSpeed).state;
-              auto scroll_delay = id(scrollingDelay).state;
-              auto scroll_dwell = id(scrollingDwell).state;
-              id(led_display).scroll(scroll_enable, (scroll_cont) ? max7219digit::CONTINUOUS : max7219digit::STOP, scroll_speed, scroll_delay, scroll_dwell);
-              ESP_LOGI("$TAG", "Adapted display scrolling: Enabled=%d, Continous=%d, Speed=%fms, Delay=%fms, Dwell=%fms", scroll_enable, scroll_cont, scroll_speed, scroll_delay, scroll_dwell);
-              unlock_mutex();
-            }
+            bool scroll_enable = id(scrolling).state;
+            bool scroll_cont = id(scrollingCont).state;
+            auto scroll_speed = id(scrollingSpeed).state;
+            auto scroll_delay = id(scrollingDelay).state;
+            auto scroll_dwell = id(scrollingDwell).state;
+            id(led_display).scroll(scroll_enable, (scroll_cont) ? max7219digit::CONTINUOUS : max7219digit::STOP, scroll_speed, scroll_delay, scroll_dwell);
+            ESP_LOGI("$TAG", "Adapted display scrolling: Enabled=%d, Continous=%d, Speed=%fms, Delay=%fms, Dwell=%fms", scroll_enable, scroll_cont, scroll_speed, scroll_delay, scroll_dwell);
           }
 
   - id: update_brightness
@@ -149,12 +141,9 @@ script:
             ESP_LOGI("$TAG", "Update brightness - skipped, still booting");
           } else {
             ESP_LOGD("$TAG", "Updating brightness...");
-            if (lock_mutex()) {
-              int i = id(brightness).state;
-              id(led_display).intensity(i);
-              ESP_LOGI("$TAG", "Display brightness changed");
-              unlock_mutex();
-            }
+            int i = id(brightness).state;
+            id(led_display).intensity(i);
+            ESP_LOGI("$TAG", "Display brightness changed");
           }
 
 
@@ -165,12 +154,9 @@ script:
             ESP_LOGI("$TAG", "Trigger Rendering - skipped, still booting");
           } else {
             ESP_LOGD("$TAG", "Triggering Rendering...");
-            if (lock_mutex()) {
-              id(led_display).turn_on_off(id(display_enable).state);
-              id(led_display).invert_on_off(id(invert).state);
-              id(led_display).update();
-              unlock_mutex();
-            }
+            id(led_display).turn_on_off(id(display_enable).state);
+            id(led_display).invert_on_off(id(invert).state);
+            id(led_display).update();
           }
 
 
@@ -255,7 +241,9 @@ text:
     icon: "mdi:format-text-variant"
     mode: text
     optimistic: true
-    restore_value: true
+    # No restore_value: HA automations write here constantly (clock/status)
+    # -> would cause ~1 flash write/minute. After boot shows initial_value
+    # briefly until HA pushes the real value.
     initial_value: "Hello, ESPHome!"
     on_value:
       - script.execute: trigger_rendering
