@@ -12,7 +12,7 @@ substitutions:
   api_key: !secret matrix_display_api_key
   ota_pw: !secret matrix_display_ota_pw
   fallback_hotspot_ssid: "Color Matrix Fallback Hotspot"
-  fallback_hotspot_pw: "238asdqvasd3t4d"
+  fallback_hotspot_pw: !secret matrix_display_fallback_pw
 
 
 
