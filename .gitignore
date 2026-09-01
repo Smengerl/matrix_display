@@ -7,3 +7,6 @@ sdkconfig.esp32dev
 src/unused.c
 .DS_Store
 print/.DS_Store
+
+# ESPHome secrets - copy secrets.yaml.example to secrets.yaml
+secrets.yaml
