@@ -184,6 +184,9 @@ select:
   - platform: template
     name: Font
     id: font_select
+    # These strings are display labels only - font_select uses active_index(),
+    # not the string. Their order MUST match the font_N packages above / the
+    # getFontBySelectId() switch in font_helper.h.
     options:
       - "${default_font}"
       - "5by7 (8 px)"
@@ -196,11 +199,11 @@ select:
       - "Kenney Rocket (6 px)"
       - "minikstt (8 px)"
       - "Nihonium113 (8 px)"
-      - "origa___.ttf &6 px)"
+      - "origa (6 px)"
       - "PIXY (4 px)"
       - "PXFXshadow-3 (8 px)"
-      - "upheavtt (8px, super fat)"
-      - "Visitor1 (8px)"
+      - "upheavtt (8 px)"
+      - "visitor1 (8 px)"
       - "Wendy-Neue (5 px)"
 
     initial_option: "${default_font}"

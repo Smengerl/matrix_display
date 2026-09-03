@@ -31,9 +31,10 @@ esphome:
   name: ${name}
   friendly_name: ${friendly_name}
   comment: ${comment}
+  min_version: "2026.8.1"
   name_add_mac_suffix: false
   project:
-    name: ${project_name} 
+    name: ${project_name}
     version: '1.0'
   compile_process_limit: 1
   includes:
@@ -71,7 +72,9 @@ display:
     num_chips: $num_chips
     update_interval: 1s   # renders itself -> $offline shows on WiFi loss, missed content updates self-heal
     lambda: |-
-      if(id(wifi_id) != nullptr && id(wifi_id).is_connected()) {
+      // id(wifi_id) is a reference to a statically-allocated component - never
+      // null, so no nullptr check (it triggered -Waddress).
+      if(id(wifi_id).is_connected()) {
 
         auto font_index = id(font_select).active_index();
         esphome::font::Font* font = id($default_font_id); // default font
