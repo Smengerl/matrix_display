@@ -6,6 +6,8 @@
 
 This project showcases a 32x8 pixel LED matrix display powered by an ESP32, designed for versatile applications such as clocks or smart home displays. Built on a budget of just $10, it uses 3D-printed parts and standard electronic components. Full source code and resources are provided to help you build it from scratch.
 
+As an alternative to the code in this repository, ready-made firmware for this kind of display can be obtained from the [ESPTimeCast](https://github.com/mfactory-osaka/ESPTimeCast) project on GitHub.
+
 ## Table of Contents
 - [Mechanics](#mechanics)
 - [Electronics](#electronics)
@@ -141,6 +143,7 @@ This example integrates the display with Home Assistant using ESPHome.
 
 - home assistant
 - ESP home
+- [ESPTimeCast](https://github.com/mfactory-osaka/ESPTimeCast) – firmware for ESP-based LED matrix clocks
 
 #### Installation
 
